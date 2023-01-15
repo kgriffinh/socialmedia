@@ -1,0 +1,370 @@
+openapi: 3.0.3
+info:
+  title: Social Media API
+  description: |-
+    API untuk social media project
+  version: 1.0.0
+servers:
+  - url: htpps://socialmedia.com
+    description: digunakan untuk ujicoba
+tags:
+  - name: user
+  - name: posting
+  - name: comment
+paths:
+  /users:
+    post:
+      tags:
+        - "user"
+      description: untuk melakukan registrasi user
+      summary: register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nama:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                hp:
+                  type: string
+                alamat:
+                  type: string
+                password:
+                  type: string
+            example:
+              nama: griffin
+              email: griffinh29@gmail.com
+              hp: "08123456"
+              alamat: mks
+              password: "g123"
+      responses:
+        201:
+          description: "berhasil register user"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "sukses menambahkan data"
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+
+  /users/{id}:
+    patch:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - "nama"
+              type: object
+              properties:
+                nama:
+                  type: string
+                email:
+                  type: string
+                hp:
+                  type: string
+                alamat:
+                  type: string
+                password:
+                  type: string
+                  format: password
+      tags:
+        - "user"
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        404:
+          description: "data tidak ditemukan"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "data tidak ditemukan"
+        400:
+          $ref: '#/components/responses/400'
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      tags:
+        - "user"
+      responses:
+        200:
+          description: berhasil hapus data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "sukses menghapus data"
+        400:
+          $ref: '#/components/responses/400'
+
+  /login:
+    post:
+      tags:
+        - user
+      description: "untuk melakukan login"
+      summary: login user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        200:
+          description: berhasil login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseObject'
+              example:
+                data:
+                  id: 1
+                  nama: griffin
+                  email: griffinh29@gmail.com
+                message: "sukses login"
+        404:
+          $ref: '#/components/responses/404'
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+        
+  /posting:
+    post:
+      tags:
+        - "posting"
+      description: digunakan untuk posting cerita, artkel, atau foto
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cerita/artikel/foto:
+                  type: string
+            example:
+              cerita/artikel/foto: kemarin sore saya ngopi di warkop bersama teman
+      responses:
+        201:
+          description: berhasil posting
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: sukses menambahkan data
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+    
+  /posting/{id}:
+    patch:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - "judul"
+              type: object
+              properties:
+                judul:
+                  type: string
+                isi:
+                  type: string
+      tags:
+        - "posting"
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        404:
+          $ref: '#/components/responses/404'
+        400:
+          $ref: '#/components/responses/400'
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      tags:
+        - "posting"
+      responses:
+        200:
+          description: berhasil hapus data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "sukses menghapus data"
+        400:
+          $ref: '#/components/responses/400'
+
+  /comment:
+    post:
+      tags:
+        - "comment"
+      description: digunakan untuk melakukan komentar
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              type: string
+            example:
+              comment: ceritanya bagus
+      responses:
+        201:
+          description: berhasil posting komentar
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: sukses menambahkan data
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+    delete:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      tags:
+        - "comment"
+      responses:
+        200:
+          description: berhasil hapus data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "sukses menghapus data"
+        400:
+          $ref: '#/components/responses/400'
+          
+      
+components:
+  schemas:
+    responseObject:
+      type: object
+      properties:
+        data:
+          type: object
+        message:
+          type: string
+    responseObjectArr:
+      type: object
+      properties:
+        data:
+          type: array
+          items: 
+            type: object
+        message:
+          type: string
+  responses:
+    200:
+      description: berhasil update data
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            message: "sukses mengupdate data"
+    404:
+          description: "data tidak ditemukan"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: "data tidak ditemukan"
+    400:
+      description: "Kesalahan dari user"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+          example:
+            message: "kesalahan input"
+    500:
+      description: "Kesalahan dari server"
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+            example:
+              message: "data tidak bisa diolah"

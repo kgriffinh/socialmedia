@@ -285,6 +285,12 @@ paths:
       tags:
         - comments
       description: digunakan untuk melihat daftar comment. comment merupakan bagian dari posts
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         200:
           description: "sukses melihat data"

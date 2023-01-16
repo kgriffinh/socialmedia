@@ -137,7 +137,7 @@ paths:
               example:
                 data:
                   id: 1
-                  nama: griffin
+                  username: griffin
                   email: griffinh29@gmail.com
                 message: "sukses login"
         404:
@@ -172,9 +172,6 @@ paths:
                     - text
                 - required:
                     - image
-            example:
-              text: "kemarin siang saya pergi ke mall"
-              image: (contoh binary)
       responses:
         201:
           description: berhasil melakukan post
@@ -218,23 +215,28 @@ paths:
     put:
       tags:
         - "posts"
-      parameters:
-        - name: post_id
-          in: path
-          required: true
-          schema:
-            type: integer
+      description: digunakan untuk mengedit postingan
       security:
         - Bearer: []
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               properties:
-                post:
+                text:
                   type: string
+                  description: The text of the post.
+                image:
+                  type: string
+                  format: binary
+                  description: The binary data of the image file being uploaded.
+              oneOf:
+                - required:
+                    - text
+                - required:
+                    - image
       responses:
         200:
           $ref: '#/components/responses/200'
@@ -269,6 +271,41 @@ paths:
           $ref: '#/components/responses/400'
 
   /comments:
+    post:
+      tags:
+        - "comments"
+      description: digunakan untuk melakukan komentar
+      security:
+        - Bearer: []
+      requestBody:
+        content:
+          application/json:
+            schema: 
+              type: object
+              properties:
+                post_id:
+                  type: integer
+                comment:
+                  type: string
+            example:
+              id: 1
+              comment: slay girl
+      responses:
+        201:
+          description: berhasil posting komentar
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  message:
+                    type: string
+              example:
+                message: sukses menambahkan data
+        400:
+          $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
     get:
       tags:
         - comments
@@ -289,51 +326,6 @@ paths:
                 message: berhasil menampilkan data comment
         404:
           $ref: '#/components/responses/404'
-        500:
-          $ref: '#/components/responses/500'
-
-  /comments/{post_id}:
-    post:
-      tags:
-        - "comments"
-      description: digunakan untuk melakukan komentar
-      parameters:
-        - name: post_id
-          in: path
-          required: true
-          schema:
-            type: integer
-      security:
-        - Bearer: []
-      requestBody:
-        content:
-          application/json:
-            schema: 
-              type: object
-              properties:
-                id:
-                  type: integer
-                comment:
-                  type: string
-            example:
-              - id: 1
-                comment: slay girl
-              - id: 2
-                comment: gambarnya bagus
-      responses:
-        201:
-          description: berhasil posting komentar
-          content:
-            application/json:
-              schema: 
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: sukses menambahkan data
-        400:
-          $ref: '#/components/responses/400'
         500:
           $ref: '#/components/responses/500'
 

@@ -1,6 +1,4 @@
 package users
-<<<<<<< HEAD
-=======
 
 import "github.com/labstack/echo/v4"
 
@@ -34,4 +32,3 @@ type UserData interface {
 	Update(id uint, updateData Core) (Core, error)
 	Delete(id uint) error
 }
->>>>>>> 46c9ca5 (add entity, model, query)

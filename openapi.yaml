@@ -24,7 +24,9 @@ paths:
             schema:
               type: object
               properties:
-                nama:
+                id:
+                  type: integer
+                username:
                   type: string
                 email:
                   type: string
@@ -36,11 +38,11 @@ paths:
                 password:
                   type: string
             example:
-              nama: griffin
+              id: 1
+              username: griffin
               email: griffinh29@gmail.com
               hp: "08123456"
               alamat: mks
-              password: "g123"
       responses:
         201:
           description: "berhasil register user"
@@ -55,6 +57,30 @@ paths:
                 message: "sukses menambahkan data"
         400:
           $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+    get:
+      tags:
+        - user
+      description: digunakan untuk melihat daftar user
+      responses:
+        200:
+          description: "sukses melihat data"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseObjectArr'
+              example:
+                data:
+                  - id: 1
+                    username: griffin
+                    hp: "08123456"
+                  - id: 2
+                    username: Fajar
+                    hp: "12345678"
+                message: berhasil menampilkan data user
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
 
@@ -72,10 +98,10 @@ paths:
           application/json:
             schema:
               required:
-                - "nama"
+                - "username"
               type: object
               properties:
-                nama:
+                username:
                   type: string
                 email:
                   type: string
@@ -92,16 +118,7 @@ paths:
         200:
           $ref: '#/components/responses/200'
         404:
-          description: "data tidak ditemukan"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-              example:
-                message: "data tidak ditemukan"
+          $ref: '#/components/responses/404'
         400:
           $ref: '#/components/responses/400'
     delete:
@@ -177,9 +194,12 @@ paths:
             schema:
               type: object
               properties:
+                id:
+                  type: integer
                 cerita/artikel/foto:
                   type: string
             example:
+              id: 1
               cerita/artikel/foto: kemarin sore saya ngopi di warkop bersama teman
       responses:
         201:
@@ -197,6 +217,28 @@ paths:
           $ref: '#/components/responses/400'
         500:
           $ref: '#/components/responses/500'
+    get:
+      tags:
+        - posting
+      description: digunakan untuk melihat daftar posting
+      responses:
+        200:
+          description: "sukses melihat data"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseObjectArr'
+              example:
+                data:
+                  - id: 1
+                    cerita/artikel/foto: "kemarin sore saya pergi mengunjungi taman di dekat rumah saya"
+                  - id: 2
+                    cerita/artikel/foto: "https://berita.99.co/wp-content/uploads/2022/07/nature-mountain-scenery-background-free-vector.jpg"
+                message: berhasil menampilkan data posting
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
     
   /posting/{id}:
     patch:
@@ -211,8 +253,6 @@ paths:
         content:
           application/json:
             schema:
-              required:
-                - "judul"
               type: object
               properties:
                 judul:
@@ -261,8 +301,14 @@ paths:
         content:
           application/json:
             schema: 
-              type: string
+              type: object
+              properties:
+                id:
+                  type: integer
+                comment:
+                  type: string
             example:
+              id: 1
               comment: ceritanya bagus
       responses:
         201:
@@ -303,6 +349,28 @@ paths:
                 message: "sukses menghapus data"
         400:
           $ref: '#/components/responses/400'
+    get:
+      tags:
+        - comment
+      description: digunakan untuk melihat daftar comment
+      responses:
+        200:
+          description: "sukses melihat data"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseObjectArr'
+              example:
+                data:
+                  - id: 1
+                    comment: "slay girl"
+                  - id: 2
+                    comment: "gambarnya bagus"
+                message: berhasil menampilkan data comment
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
           
       
 components:

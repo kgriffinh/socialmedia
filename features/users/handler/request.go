@@ -8,13 +8,13 @@ type LoginRequest struct {
 }
 
 type RegisterRequest struct {
-	Username string `json:"Username" form:"Username"`
+	Username string `json:"username" form:"username"`
 	Email    string `json:"email" form:"email"`
 	Password string `json:"password" form:"password"`
 }
 
 type UpdateRequest struct {
-	Username string `json:"Username" form:"Username"`
+	Username string `json:"username" form:"username"`
 	Email    string `json:"email" form:"email"`
 }
 

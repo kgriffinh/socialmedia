@@ -24,8 +24,8 @@ func New(ud users.UserData) users.UserService {
 	}
 }
 
-func (uuc *userUseCase) Login(email, password string) (string, users.Core, error) {
-	res, err := uuc.qry.Login(email)
+func (uuc *userUseCase) Login(username, password string) (string, users.Core, error) {
+	res, err := uuc.qry.Login(username)
 	if err != nil {
 		msg := ""
 		if strings.Contains(err.Error(), "not found") {
@@ -44,7 +44,6 @@ func (uuc *userUseCase) Login(email, password string) (string, users.Core, error
 	claims := jwt.MapClaims{}
 	claims["authorized"] = true
 	claims["userID"] = res.ID
-	// claims["exp"] = time.Now().Add(time.Hour * 1).Unix() //Token expires after 1 hour
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	useToken, _ := token.SignedString([]byte(config.JWT_KEY))
 

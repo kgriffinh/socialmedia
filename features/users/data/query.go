@@ -18,10 +18,10 @@ func New(db *gorm.DB) users.UserData {
 	}
 }
 
-func (uq *userQuery) Login(email string) (users.Core, error) {
+func (uq *userQuery) Login(username string) (users.Core, error) {
 	res := User{}
 
-	if err := uq.db.Where("email = ?", email).First(&res).Error; err != nil {
+	if err := uq.db.Where("username = ?", username).First(&res).Error; err != nil {
 		log.Println("login query error", err.Error())
 		return users.Core{}, errors.New("data not found")
 	}

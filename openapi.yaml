@@ -8,14 +8,14 @@ servers:
   - url: htpps://socialmedia.com
     description: digunakan untuk ujicoba
 tags:
-  - name: user
+  - name: users
   - name: posts
   - name: comments
 paths:
   /users:
     post:
       tags:
-        - "user"
+        - "users"
       description: untuk melakukan registrasi user
       summary: register
       requestBody:
@@ -58,7 +58,7 @@ paths:
           $ref: '#/components/responses/500'
     put:
       tags:
-        - "user"
+        - "users"
       description: untuk mengedit data user
       security:
         - Bearer: []
@@ -91,7 +91,7 @@ paths:
           $ref: '#/components/responses/400'
     delete:
       tags:
-        - "user"
+        - "users"
       security:
         - Bearer: []
       responses:
@@ -112,7 +112,7 @@ paths:
   /login:
     post:
       tags:
-        - user
+        - users
       description: "untuk melakukan login"
       summary: login user
       requestBody:
@@ -156,23 +156,25 @@ paths:
         - Bearer: []
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               properties:
-                id:
-                  type: integer
-                post:
+                text:
                   type: string
+                  description: The text of the post.
+                image:
+                  type: string
+                  format: binary
+                  description: The binary data of the image file being uploaded.
+              oneOf:
+                - required:
+                    - text
+                - required:
+                    - image
             example:
-              id: 1
-              post: kemarin sore saya ngopi di warkop bersama teman
-          image/png:
-            schema:
-              type: string
-              format: binary
-            example:
-              post: "https://berita.99.co/wp-content/uploads/2022/07/nature-mountain-scenery-background-free-vector.jpg"
+              text: "kemarin siang saya pergi ke mall"
+              image: (contoh binary)
       responses:
         201:
           description: berhasil melakukan post
@@ -217,7 +219,7 @@ paths:
       tags:
         - "posts"
       parameters:
-        - name: id
+        - name: post_id
           in: path
           required: true
           schema:
@@ -296,7 +298,7 @@ paths:
         - "comments"
       description: digunakan untuk melakukan komentar
       parameters:
-        - name: id
+        - name: post_id
           in: path
           required: true
           schema:
@@ -334,11 +336,13 @@ paths:
           $ref: '#/components/responses/400'
         500:
           $ref: '#/components/responses/500'
+
+  /comments/{comment_id}:
     delete:
       tags:
         - "comments"
       parameters:
-        - name: post_id
+        - name: comment_id
           in: path
           required: true
           schema:

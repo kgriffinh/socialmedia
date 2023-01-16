@@ -29,17 +29,11 @@ paths:
                 email:
                   type: string
                   format: email
-                hp:
-                  type: string
-                alamat:
-                  type: string
                 password:
                   type: string
             example:
               username: griffin
               email: griffinh29@gmail.com
-              hp: "08123456"
-              alamat: mks
               password: "g123"
       responses:
         201:
@@ -55,6 +49,26 @@ paths:
                 message: "sukses menambahkan data"
         400:
           $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+    get:
+      tags:
+        - "users"
+      description: untuk melihat profile user
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: "sukses melihat data"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseObject'
+              example:
+                username: "griffin"
+                email: "griffinh29@gmail.com"
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
     put:
@@ -75,10 +89,6 @@ paths:
                 username:
                   type: string
                 email:
-                  type: string
-                hp:
-                  type: string
-                alamat:
                   type: string
                 password:
                   type: string

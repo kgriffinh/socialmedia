@@ -36,7 +36,7 @@ func (ps *postsSrv) Add(token interface{}, newPost posts.Core) (posts.Core, erro
 // Update implements book.BookService
 func (ps *postsSrv) Update(token interface{}, postsID int, updatedData posts.Core) (posts.Core, error) {
 	userID := helper.ExtractToken(token)
-	res, err := ps.data.Update(userID, updatedData)
+	res, err := ps.data.Update(postsID, userID, updatedData)
 	if err != nil {
 		log.Println(err.Error())
 		if strings.Contains(err.Error(), "not found") {

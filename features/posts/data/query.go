@@ -54,9 +54,9 @@ func (pd *postsData) GetPost() ([]posts.Core, error) {
 	return result, nil
 }
 
-func (pd *postsData) Update(postID int, updateData posts.Core) (posts.Core, error) {
+func (pd *postsData) Update(postID int, userID int, updateData posts.Core) (posts.Core, error) {
 	cnv := CoreToData(updateData)
-	qry := pd.db.Model(&User{}).Where("id = ?", postID).Updates(&cnv)
+	qry := pd.db.Model(&Posts{}).Where("id = ? AND user_id = ?", postID, userID).Updates(&cnv)
 
 	affrows := qry.RowsAffected
 	if affrows == 0 {

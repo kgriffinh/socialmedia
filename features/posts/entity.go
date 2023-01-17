@@ -26,6 +26,6 @@ type PostService interface {
 type PostData interface {
 	Add(userID int, newPost Core) (Core, error)
 	GetPost() ([]Core, error)
-	Update(postID int, updateData Core) (Core, error)
+	Update(postID int, userID int, updateData Core) (Core, error)
 	Delete(postID int, userID int) error
 }

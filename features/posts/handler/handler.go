@@ -53,7 +53,7 @@ func (ph *postHandle) Update() echo.HandlerFunc {
 			log.Println("trouble :  ", err.Error())
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
-		return c.JSON(PrintSuccessResponse(http.StatusOK, "sukses update post", res))
+		return c.JSON(PrintSuccessResponse(http.StatusOK, "sukses update post", AddToResponse(res)))
 	}
 }
 

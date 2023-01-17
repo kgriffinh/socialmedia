@@ -29,12 +29,12 @@ func (ph *postHandle) Add() echo.HandlerFunc {
 
 		cnv := ConvToCore(input)
 
-		res, err := ph.srv.Add(c.Get("user"), *cnv) // c.Get("user") user <- table "user" yang diambil adalah ID nya
+		res, err := ph.srv.Add(c.Get("user"), *cnv)
 		if err != nil {
 			log.Println("trouble :  ", err.Error())
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
-		return c.JSON(PrintSuccessResponse(http.StatusCreated, "sukses menambahkan post", res))
+		return c.JSON(PrintSuccessResponse(http.StatusCreated, "sukses menambahkan post", ToResponse(res)))
 	}
 }
 

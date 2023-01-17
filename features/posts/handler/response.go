@@ -6,11 +6,25 @@ import (
 	"strings"
 )
 
+type AddPostResponse struct {
+	ID          uint   `json:"id"`
+	Content     string `json:"content"`
+	Img_content string `json:"img_content"`
+}
+
 type PostResponse struct {
 	ID          uint   `json:"id"`
 	Content     string `json:"content"`
 	Img_content string `json:"img_content"`
 	Owner       string `json:"owner"`
+}
+
+func AddToResponse(data posts.Core) AddPostResponse {
+	return AddPostResponse{
+		ID:          data.ID,
+		Content:     data.Content,
+		Img_content: data.Img_content,
+	}
 }
 
 func ToResponse(data posts.Core) PostResponse {

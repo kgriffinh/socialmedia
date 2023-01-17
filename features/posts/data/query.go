@@ -26,6 +26,7 @@ func (pd *postsData) Add(userID int, newPost posts.Core) (posts.Core, error) {
 		log.Println("query error", err.Error())
 		return posts.Core{}, errors.New("querry error,fail to add item")
 	}
+
 	newPost.ID = cnv.ID
 	return newPost, nil
 }

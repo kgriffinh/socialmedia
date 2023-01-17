@@ -34,7 +34,7 @@ func (ph *postHandle) Add() echo.HandlerFunc {
 			log.Println("trouble :  ", err.Error())
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
-		return c.JSON(PrintSuccessResponse(http.StatusCreated, "sukses menambahkan post", ToResponse(res)))
+		return c.JSON(PrintSuccessResponse(http.StatusCreated, "sukses menambahkan post", AddToResponse(res)))
 	}
 }
 

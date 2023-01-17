@@ -36,3 +36,19 @@ func CoreToData(data posts.Core) Posts {
 		Img_content: data.Img_content,
 	}
 }
+
+// func (dataModel *Posts) ModelGetPost() posts.Core {
+// 	return posts.Core{
+// 		ID:          dataModel.ID,
+// 		Content:     dataModel.Content,
+// 		Img_content: dataModel.Img_content,
+// 	}
+// }
+
+// func GetPostToCore(dataModel []Posts) []posts.Core {
+// 	data := []posts.Core{}
+// 	for _, v := range dataModel {
+// 		data = append(data, v.ModelGetPost())
+// 	}
+// 	return data
+// }

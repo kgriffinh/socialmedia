@@ -22,6 +22,14 @@ func ToResponse(data posts.Core) PostResponse {
 	}
 }
 
+func GetPostResponse(data []posts.Core) []PostResponse {
+	res := []PostResponse{}
+	for _, v := range data {
+		res = append(res, ToResponse(v))
+	}
+	return res
+}
+
 func PrintSuccessResponse(code int, message string, data ...interface{}) (int, interface{}) {
 	resp := map[string]interface{}{}
 	if len(data) < 2 {

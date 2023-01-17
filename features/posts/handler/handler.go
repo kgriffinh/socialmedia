@@ -65,12 +65,8 @@ func (ph *postHandle) GetPost() echo.HandlerFunc {
 			log.Println("no post found ", err.Error())
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
-		// log.Println(res)
-		result := []PostResponse{}
-		for i := 0; i < len(res); i++ {
-			result = append(result, ToResponse(res[i]))
-		}
-		return c.JSON(PrintSuccessResponse(http.StatusOK, "sukses melihat post", res))
+
+		return c.JSON(PrintSuccessResponse(http.StatusOK, "sukses melihat post", GetPostResponse(res)))
 	}
 }
 

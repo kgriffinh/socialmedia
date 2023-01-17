@@ -4,8 +4,9 @@ import "github.com/labstack/echo/v4"
 
 type Core struct {
 	ID          uint
-	content     string
-	img_content string
+	Content     string
+	Img_content string
+	Owner       string
 }
 
 type PostHandler interface {

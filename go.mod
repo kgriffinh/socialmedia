@@ -5,6 +5,7 @@ go 1.19
 require github.com/spf13/viper v1.14.0
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
@@ -18,6 +19,7 @@ require (
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	golang.org/x/crypto v0.2.0 // indirect
 	golang.org/x/net v0.4.0 // indirect
+	golang.org/x/time v0.2.0 // indirect
 )
 
 require (
@@ -25,6 +27,7 @@ require (
 	github.com/go-playground/validator/v10 v10.11.1
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/echo/v4 v4.10.0
 	github.com/magiconair/properties v1.8.6 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect

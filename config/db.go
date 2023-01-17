@@ -1,10 +1,10 @@
 package config
 
 import (
-	// book "cleanarch/features/book/data"
-	// user "cleanarch/features/user/data"
 	"fmt"
 	"log"
+	posts "socialmedia/features/posts/data"
+	users "socialmedia/features/users/data"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -23,6 +23,6 @@ func InitDB(ac AppConfig) *gorm.DB {
 }
 
 func Migrate(db *gorm.DB) {
-	// db.AutoMigrate(user.User{})
-	// db.AutoMigrate(book.Books{})
+	db.AutoMigrate(users.User{})
+	db.AutoMigrate(posts.Posts{})
 }

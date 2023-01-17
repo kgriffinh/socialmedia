@@ -29,17 +29,12 @@ paths:
                 email:
                   type: string
                   format: email
-                hp:
-                  type: string
-                alamat:
-                  type: string
                 password:
                   type: string
             example:
               username: griffin
               email: griffinh29@gmail.com
-              hp: "08123456"
-              alamat: mks
+              password: "g123"
       responses:
         201:
           description: "berhasil register user"
@@ -54,6 +49,26 @@ paths:
                 message: "sukses menambahkan data"
         400:
           $ref: '#/components/responses/400'
+        500:
+          $ref: '#/components/responses/500'
+    get:
+      tags:
+        - "users"
+      description: untuk melihat profile user
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: "sukses melihat data"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseObject'
+              example:
+                username: "griffin"
+                email: "griffinh29@gmail.com"
+        404:
+          $ref: '#/components/responses/404'
         500:
           $ref: '#/components/responses/500'
     put:
@@ -74,10 +89,6 @@ paths:
                 username:
                   type: string
                 email:
-                  type: string
-                hp:
-                  type: string
-                alamat:
                   type: string
                 password:
                   type: string
@@ -121,9 +132,8 @@ paths:
             schema:
               type: object
               properties:
-                email:
+                username:
                   type: string
-                  format: email
                 password:
                   type: string
                   format: password
@@ -139,6 +149,7 @@ paths:
                   id: 1
                   username: griffin
                   email: griffinh29@gmail.com
+                  token: "locm2u32u89fhdu8w7fi"
                 message: "sukses login"
         404:
           $ref: '#/components/responses/404'
@@ -151,7 +162,7 @@ paths:
     post:
       tags:
         - "posts"
-      description: digunakan untuk post cerita, artkel, atau foto
+      description: digunakan untuk post cerita, artikel, atau foto
       security:
         - Bearer: []
       requestBody:
@@ -202,9 +213,14 @@ paths:
               example:
                 data:
                   - id: 1
-                    post: "kemarin sore saya pergi mengunjungi taman di dekat rumah saya"
+                    content: "kemarin sore saya pergi mengunjungi taman di dekat rumah saya"
+                    image_content: "https://berita.99.co/wp-content/uploads/2022/07/nature-mountain-scenery-background-free-vector.jpg"
                   - id: 2
-                    post: "https://berita.99.co/wp-content/uploads/2022/07/nature-mountain-scenery-background-free-vector.jpg"
+                    content: "besok saya akan pergi ke mall"
+                    image_content:
+                  - id: 3
+                    content:
+                    image_content: "https://berita.99.co/wp-content/uploads/2022/07/nature-mountain-scenery-background-free-vector.jpg"
                 message: berhasil menampilkan data posting
         404:
           $ref: '#/components/responses/404'
@@ -216,6 +232,12 @@ paths:
       tags:
         - "posts"
       description: digunakan untuk mengedit postingan
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          schema:
+            type: integer
       security:
         - Bearer: []
       requestBody:
@@ -269,6 +291,46 @@ paths:
                 message: "sukses menghapus data"
         400:
           $ref: '#/components/responses/400'
+    get:
+      tags:
+        - comments
+      description: digunakan untuk melihat daftar comment. comment merupakan bagian dari posts
+      parameters:
+        - name: post_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "sukses melihat data"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseObject'
+              example:
+                data:
+                  post_id: 1
+                  content: "kemarin sore saya pergi mengunjungi taman di dekat rumah saya"
+                  image_content:
+                  username: griffin
+                  user_pp:
+                  comment:
+                    - comment_id: 1
+                      comment: "slay girl"
+                      user_id: 1
+                      username: griffin
+                      user_pp:
+                    - comment_id: 2
+                      comment: "minta likenya dong"
+                      user_id: 1
+                      username: griffin
+                      user_pp:
+                message: berhasil menampilkan data comment
+        404:
+          $ref: '#/components/responses/404'
+        500:
+          $ref: '#/components/responses/500'
 
   /comments:
     post:
@@ -288,7 +350,7 @@ paths:
                 comment:
                   type: string
             example:
-              id: 1
+              post_id: 1
               comment: slay girl
       responses:
         201:
@@ -306,30 +368,35 @@ paths:
           $ref: '#/components/responses/400'
         500:
           $ref: '#/components/responses/500'
-    get:
-      tags:
-        - comments
-      description: digunakan untuk melihat daftar comment
-      responses:
-        200:
-          description: "sukses melihat data"
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/responseObjectArr'
-              example:
-                data:
-                  - id: 1
-                    comment: "slay girl"
-                  - id: 2
-                    comment: "gambarnya bagus"
-                message: berhasil menampilkan data comment
-        404:
-          $ref: '#/components/responses/404'
-        500:
-          $ref: '#/components/responses/500'
 
   /comments/{comment_id}:
+    put:
+      tags:
+        - "comments"
+      parameters:
+        - name: comment_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      security:
+        - Bearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment:
+                  type: string
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        404:
+          $ref: '#/components/responses/404'
+        400:
+          $ref: '#/components/responses/400'
     delete:
       tags:
         - "comments"

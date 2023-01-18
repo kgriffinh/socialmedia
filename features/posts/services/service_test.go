@@ -63,7 +63,7 @@ func TestAdd(t *testing.T) {
 		assert.Equal(t, uint(0), res.ID)
 	})
 
-	t.Run("post tidak ditemukan", func(t *testing.T) {
+	t.Run("content tidak ditemukan", func(t *testing.T) {
 		input := posts.Core{Content: "spongebob", Img_content: "adfasdf"}
 		data.On("Add", 1, input).Return(posts.Core{}, errors.New("data not found")).Once()
 
@@ -147,7 +147,7 @@ func TestUpdate(t *testing.T) {
 func TestDelete(t *testing.T) {
 	repo := mocks.NewPostData(t)
 
-	t.Run("sukses menghapus posts", func(t *testing.T) {
+	t.Run("sukses menghapus content", func(t *testing.T) {
 		repo.On("Delete", int(1), int(1)).Return(nil).Once()
 
 		srv := New(repo)
@@ -159,15 +159,15 @@ func TestDelete(t *testing.T) {
 		repo.AssertExpectations(t)
 	})
 
-	// t.Run("jwt tidak valid", func(t *testing.T) {
-	// 	// repo.On("Delete", int(-1), int(-1)).Return(posts.Core{}, errors.New("internal server error")).Once()
-	// 	_, token := helper.GenerateJWT(1)
-	// 	srv := New(repo)
+	t.Run("jwt tidak valid", func(t *testing.T) {
+		srv := New(repo)
 
-	// 	err := srv.Delete(token, 1)
-	// 	assert.NotNil(t, err)
-	// 	assert.ErrorContains(t, err, "not found")
-	// })
+		_, token := helper.GenerateJWT(1)
+
+		err := srv.Delete(token, 1)
+		assert.NotNil(t, err)
+		assert.ErrorContains(t, err, "not found")
+	})
 
 	t.Run("data tidak ditemukan", func(t *testing.T) {
 		repo.On("Delete", 5, 1).Return(errors.New("data not found")).Once()
@@ -201,7 +201,7 @@ func TestDelete(t *testing.T) {
 func TestGetPost(t *testing.T) {
 	repo := mocks.NewPostData(t)
 
-	t.Run("Sukses lihat buku", func(t *testing.T) {
+	t.Run("Sukses lihat content", func(t *testing.T) {
 		resData := []posts.Core{
 			{
 				ID:          uint(0),
@@ -245,3 +245,21 @@ func TestGetPost(t *testing.T) {
 		repo.AssertExpectations(t)
 	})
 }
+
+// func TestGetPostDetail(t *testing.T){
+// 	repo := mocks.NewPostData(t)
+// 	resData := type test interface{
+
+// 	}
+
+// 	t.Run("Sukses lihat content & comment", func(t *testing.T) {
+// 		repo.On("GetPostDetail", 1).Return(resData, nil).Once()
+
+// 		srv := New(repo)
+
+// 		res, err := srv.GetPostDetail(postID)
+// 		assert.Nil(t, err)
+// 		assert.NotEmpty(t, res)
+// 		repo.AssertExpectations(t)
+// 	})
+// }

@@ -1,7 +1,8 @@
 package data
 
 import (
-	// "socialmedia/features/posts/data"
+	"socialmedia/features/comments"
+	"socialmedia/features/comments/data"
 	"socialmedia/features/posts"
 
 	"gorm.io/gorm"
@@ -12,6 +13,7 @@ type Posts struct {
 	Content     string
 	Img_content string
 	UserID      uint
+	Comment     []data.Comments `gorm:"foreignKey:PostID"`
 }
 
 type User struct {
@@ -19,6 +21,12 @@ type User struct {
 	Username string
 	Email    string
 	Password string
+}
+
+type Comment struct {
+	ID       uint
+	Text     string
+	Username string
 }
 
 func ToCore(data Posts) posts.Core {
@@ -37,18 +45,9 @@ func CoreToData(data posts.Core) Posts {
 	}
 }
 
-// func (dataModel *Posts) ModelGetPost() posts.Core {
-// 	return posts.Core{
-// 		ID:          dataModel.ID,
-// 		Content:     dataModel.Content,
-// 		Img_content: dataModel.Img_content,
-// 	}
-// }
-
-// func GetPostToCore(dataModel []Posts) []posts.Core {
-// 	data := []posts.Core{}
-// 	for _, v := range dataModel {
-// 		data = append(data, v.ModelGetPost())
-// 	}
-// 	return data
-// }
+func ToCoreCom(data data.Comments) comments.Core {
+	return comments.Core{
+		ID:   data.ID,
+		Text: data.Text,
+	}
+}

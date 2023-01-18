@@ -2,28 +2,38 @@ package handler
 
 import (
 	"net/http"
-	"socialmedia/features/users"
+	"socialmedia/features/comments"
 	"strings"
 )
 
-type UserReponse struct {
-	Username string `json:"username"`
-	Email    string `json:"email"`
+type AddCommentResponse struct {
+	ID   uint   `json:"id"`
+	Text string `json:"comment"`
 }
 
-func ToResponse(data users.Core) UserReponse {
-	return UserReponse{
-		Username: data.Username,
-		Email:    data.Email,
+type UpdateCommentResponse struct {
+	Text string `json:"comment"`
+}
+
+func AddToResponse(data comments.Core) AddCommentResponse {
+	return AddCommentResponse{
+		ID:   data.ID,
+		Text: data.Text,
 	}
 }
 
-func PrintSuccessReponse(code int, message string, data ...interface{}) (int, interface{}) {
+func UpdToResponse(data comments.Core) UpdateCommentResponse {
+	return UpdateCommentResponse{
+		Text: data.Text,
+	}
+}
+
+func PrintSuccessResponse(code int, message string, data ...interface{}) (int, interface{}) {
 	resp := map[string]interface{}{}
 	if len(data) < 2 {
-		resp["data"] = ToResponse(data[0].(users.Core))
+		resp["data"] = (data[0])
 	} else {
-		resp["data"] = ToResponse(data[0].(users.Core))
+		resp["data"] = (data[0])
 		resp["token"] = data[1].(string)
 	}
 

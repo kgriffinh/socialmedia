@@ -71,6 +71,29 @@ func (_m *PostService) GetPost() ([]posts.Core, error) {
 	return r0, r1
 }
 
+// GetPostDetail provides a mock function with given fields: postID
+func (_m *PostService) GetPostDetail(postID int) (interface{}, error) {
+	ret := _m.Called(postID)
+
+	var r0 interface{}
+	if rf, ok := ret.Get(0).(func(int) interface{}); ok {
+		r0 = rf(postID)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(interface{})
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(int) error); ok {
+		r1 = rf(postID)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // Update provides a mock function with given fields: token, postID, updateData
 func (_m *PostService) Update(token interface{}, postID int, updateData posts.Core) (posts.Core, error) {
 	ret := _m.Called(token, postID, updateData)

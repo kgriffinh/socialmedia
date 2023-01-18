@@ -1,7 +1,7 @@
 package data
 
 import (
-	// "socialmedia/features/posts/data"
+	c "socialmedia/features/comments/data"
 	"socialmedia/features/posts/data"
 	"socialmedia/features/users"
 
@@ -13,7 +13,8 @@ type User struct {
 	Username string
 	Email    string
 	Password string
-	Post     []data.Posts
+	Post     []data.Posts `gorm:"foreignKey:UserID"`
+	Comment  []c.Comments `gorm:"foreignKey:UserID"`
 }
 
 func ToCore(data User) users.Core {

@@ -293,7 +293,7 @@ paths:
           $ref: '#/components/responses/400'
     get:
       tags:
-        - comments
+        - posts
       description: digunakan untuk melihat daftar comment. comment merupakan bagian dari posts
       parameters:
         - name: post_id
@@ -318,14 +318,10 @@ paths:
                   comment:
                     - comment_id: 1
                       comment: "slay girl"
-                      user_id: 1
                       username: griffin
-                      user_pp:
                     - comment_id: 2
                       comment: "minta likenya dong"
-                      user_id: 1
                       username: griffin
-                      user_pp:
                 message: berhasil menampilkan data comment
         404:
           $ref: '#/components/responses/404'

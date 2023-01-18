@@ -3,29 +3,40 @@ package services
 import (
 	"errors"
 	"log"
+
 	"socialmedia/features/posts"
 	"socialmedia/helper"
 	"strings"
+
+	"github.com/go-playground/validator"
 )
 
 type postsSrv struct {
 	data posts.PostData
+	vld  *validator.Validate
 }
 
 func New(d posts.PostData) posts.PostService {
 	return &postsSrv{
 		data: d,
+		vld:  validator.New(),
 	}
 }
 
-// Add implements book.BookService
 func (ps *postsSrv) Add(token interface{}, newPost posts.Core) (posts.Core, error) {
 	userID := helper.ExtractToken(token)
-	// error token tidak dibutuhkan karena token pasti memiliki user id karena untuk add buku dan sebagainya
-	// user perlu login terlebih dahulu sehingga pasti ada id
-	// if userID <= 0 {
-	// 	return book.Core{}, errors.New("user tidak ditemukan")
-	// }
+	if userID <= 0 {
+		return posts.Core{}, errors.New("user tidak ditemukan")
+	}
+
+	err := ps.vld.Struct(newPost)
+	if err != nil {
+		if _, ok := err.(*validator.InvalidValidationError); ok {
+			log.Println(err)
+		}
+		return posts.Core{}, errors.New("input content tidak sesuai dengan arahan")
+	}
+
 	res, err := ps.data.Add(userID, newPost)
 	if err != nil {
 		return posts.Core{}, errors.New("something wrong happens,server error")
@@ -33,14 +44,13 @@ func (ps *postsSrv) Add(token interface{}, newPost posts.Core) (posts.Core, erro
 	return res, nil
 }
 
-// Update implements book.BookService
-func (ps *postsSrv) Update(token interface{}, postsID int, updatedData posts.Core) (posts.Core, error) {
+func (ps *postsSrv) Update(token interface{}, postID int, updatedData posts.Core) (posts.Core, error) {
 	userID := helper.ExtractToken(token)
-	res, err := ps.data.Update(postsID, userID, updatedData)
+	res, err := ps.data.Update(postID, userID, updatedData)
 	if err != nil {
 		log.Println(err.Error())
 		if strings.Contains(err.Error(), "not found") {
-			return posts.Core{}, errors.New("post not found")
+			return posts.Core{}, errors.New("content not found")
 		}
 		return posts.Core{}, errors.New("internal server error")
 
@@ -48,25 +58,38 @@ func (ps *postsSrv) Update(token interface{}, postsID int, updatedData posts.Cor
 	return res, nil
 }
 
-// BookList implements book.BookService
 func (ps *postsSrv) GetPost() ([]posts.Core, error) {
 	res, err := ps.data.GetPost()
 	if err != nil {
 		log.Println("no result or server error")
 		return []posts.Core{}, errors.New("no result or server error")
 	}
-	// fmt.Println(res)
+
 	return res, nil
 }
 
-// Delete implements book.BookService
-func (ps *postsSrv) Delete(token interface{}, postsID int) error {
-	userID := helper.ExtractToken(token)
-	err := ps.data.Delete(userID, postsID)
+func (ps *postsSrv) GetPostDetail(postID int) (interface{}, error) {
+	res, err := ps.data.GetPostDetail(postID)
 	if err != nil {
 		msg := ""
-		if strings.Contains(err.Error(), "post") {
-			msg = "user dont have any post"
+		if strings.Contains(err.Error(), "not found") {
+			msg = "data tidak ditemukan"
+		} else {
+			msg = "terdapat masalah pada server"
+		}
+		return nil, errors.New(msg)
+	}
+
+	return res, nil
+}
+
+func (ps *postsSrv) Delete(token interface{}, postID int) error {
+	userID := helper.ExtractToken(token)
+	err := ps.data.Delete(userID, postID)
+	if err != nil {
+		msg := ""
+		if strings.Contains(err.Error(), "content") {
+			msg = "user dont have any content"
 		} else {
 			msg = "internal server error"
 		}

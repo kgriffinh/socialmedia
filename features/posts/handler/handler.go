@@ -19,7 +19,6 @@ func New(ps posts.PostService) posts.PostHandler {
 	}
 }
 
-// Add implements book.BookHandler
 func (ph *postHandle) Add() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		input := PostRequest{}
@@ -34,15 +33,14 @@ func (ph *postHandle) Add() echo.HandlerFunc {
 			log.Println("trouble :  ", err.Error())
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
-		return c.JSON(PrintSuccessResponse(http.StatusCreated, "sukses menambahkan post", AddToResponse(res)))
+		return c.JSON(PrintSuccessResponse(http.StatusCreated, "sukses menambahkan content", AddToResponse(res)))
 	}
 }
 
-// Update implements book.postHandler
 func (ph *postHandle) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		ParamBookID := c.Param("post_id")
-		postID, _ := strconv.Atoi(ParamBookID)
+		ParamID := c.Param("post_id")
+		postID, _ := strconv.Atoi(ParamID)
 		input := PostRequest{}
 		if err := c.Bind(&input); err != nil {
 			return c.JSON(http.StatusBadRequest, "format inputan salah")
@@ -53,33 +51,45 @@ func (ph *postHandle) Update() echo.HandlerFunc {
 			log.Println("trouble :  ", err.Error())
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
-		return c.JSON(PrintSuccessResponse(http.StatusOK, "sukses update post", AddToResponse(res)))
+		return c.JSON(PrintSuccessResponse(http.StatusOK, "sukses update content", AddToResponse(res)))
 	}
 }
 
-// BookList implements book.postHandler
 func (ph *postHandle) GetPost() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		res, err := ph.srv.GetPost()
 		if err != nil {
-			log.Println("no post found ", err.Error())
+			log.Println("no content found ", err.Error())
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
 
-		return c.JSON(PrintSuccessResponse(http.StatusOK, "sukses melihat post", GetPostResponse(res)))
+		return c.JSON(PrintSuccessResponse(http.StatusOK, "sukses melihat content", GetPostResponse(res)))
 	}
 }
 
-// Delete implements book.postHandler
+func (ph *postHandle) GetPostDetail() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		ParamID := c.Param("post_id")
+		postID, _ := strconv.Atoi(ParamID)
+		res, err := ph.srv.GetPostDetail(postID)
+		if err != nil {
+			log.Println("no content found ", err.Error())
+			return c.JSON(PrintErrorResponse(err.Error()))
+		}
+
+		return c.JSON(PrintSuccessResponse(http.StatusOK, "sukses melihat content", res))
+	}
+}
+
 func (ph *postHandle) Delete() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		ParamBookID := c.Param("post_id")
-		postID, _ := strconv.Atoi(ParamBookID)
+		ParamID := c.Param("post_id")
+		postID, _ := strconv.Atoi(ParamID)
 		err := ph.srv.Delete(c.Get("user"), postID)
 		if err != nil {
 			log.Println("trouble :  ", err.Error())
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
-		return c.JSON(PrintSuccessResponse(http.StatusOK, "sukses menghapus post", err))
+		return c.JSON(PrintSuccessResponse(http.StatusOK, "sukses menghapus content", err))
 	}
 }

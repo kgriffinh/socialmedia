@@ -1,7 +1,7 @@
 package data
 
 import (
-	// "socialmedia/features/posts/data"
+	c "socialmedia/features/comments/data"
 	"socialmedia/features/posts/data"
 	"socialmedia/features/users"
 
@@ -14,6 +14,7 @@ type User struct {
 	Email    string
 	Password string
 	Post     []data.Posts
+	Comment  []c.Comments
 }
 
 func ToCore(data User) users.Core {

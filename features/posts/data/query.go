@@ -3,6 +3,8 @@ package data
 import (
 	"errors"
 	"log"
+	"socialmedia/features/comments"
+	"socialmedia/features/comments/data"
 	"socialmedia/features/posts"
 
 	"gorm.io/gorm"
@@ -50,7 +52,39 @@ func (pd *postsData) GetPost() ([]posts.Core, error) {
 		}
 		result[i].Owner = qry.Username
 	}
-	// log.Println(result)
+
+	return result, nil
+}
+
+func (pd *postsData) GetPostDetail(postID int) (interface{}, error) {
+	resPost := Posts{}
+	qryPost := pd.db.Where("id = ?", postID).First(&resPost)
+	err := qryPost.Error
+	if err != nil {
+		log.Println("no data found")
+		return Posts{}, errors.New("data not found")
+	}
+	resCom := []data.Comments{}
+	qryCom := pd.db.Find(&resCom)
+	err2 := qryCom.Error
+	if err2 != nil {
+		log.Println("no data found")
+		return []data.Comments{}, errors.New("data not found")
+	}
+
+	result := []comments.Core{}
+	for i := 0; i < len(resCom); i++ {
+		temp := resCom[i]
+		result = append(result, ToCoreCom(temp))
+		qry := User{}
+		err := pd.db.Where("id = ?", resCom[i].UserID).First(&qry).Error
+		if err != nil {
+			log.Println("no data found")
+			return []comments.Core{}, errors.New("data not found")
+		}
+		result[i].Owner = qry.Username
+	}
+
 	return result, nil
 }
 

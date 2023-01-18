@@ -2,6 +2,8 @@ package handler
 
 import (
 	"net/http"
+	// "socialmedia/features/comments"
+	"socialmedia/features/comments/data"
 	"socialmedia/features/posts"
 	"strings"
 )
@@ -17,6 +19,14 @@ type PostResponse struct {
 	Content     string `json:"content"`
 	Img_content string `json:"img_content"`
 	Owner       string `json:"owner"`
+}
+
+type PostDetailResponse struct {
+	ID          uint   `json:"id"`
+	Content     string `json:"content"`
+	Img_content string `json:"img_content"`
+	Owner       string `json:"owner"`
+	Comment     []data.Comments
 }
 
 func AddToResponse(data posts.Core) AddPostResponse {
@@ -43,6 +53,23 @@ func GetPostResponse(data []posts.Core) []PostResponse {
 	}
 	return res
 }
+
+// func ToResponseGetPost(data posts.Core) PostResponse {
+// 	return PostResponse{
+// 		ID:          data.ID,
+// 		Content:     data.Content,
+// 		Img_content: data.Img_content,
+// 		Owner:       data.Owner,
+// 		Comment: data.Comment,
+// 	}
+// }
+
+// func GetPostDetailResponse(data []data.Comments) []PostDetailResponse {
+// 	res := []PostDetailResponse{}
+// 	for _, v := range data {
+// 		res = append(res, )
+// 	}
+// }
 
 func PrintSuccessResponse(code int, message string, data ...interface{}) (int, interface{}) {
 	resp := map[string]interface{}{}

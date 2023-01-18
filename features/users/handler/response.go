@@ -7,14 +7,12 @@ import (
 )
 
 type UserReponse struct {
-	ID       uint   `json:"id"`
 	Username string `json:"username"`
 	Email    string `json:"email"`
 }
 
 func ToResponse(data users.Core) UserReponse {
 	return UserReponse{
-		ID:       data.ID,
 		Username: data.Username,
 		Email:    data.Email,
 	}

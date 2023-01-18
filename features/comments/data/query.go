@@ -31,30 +31,6 @@ func (cd *commentData) Add(postID int, newComment comments.Core) (comments.Core,
 	return newComment, nil
 }
 
-func (cd *commentData) GetComment() ([]comments.Core, error) {
-	res := []Comments{}
-	err := cd.db.Find(&res).Error
-	if err != nil {
-		log.Println("no data found")
-		return []comments.Core{}, errors.New("data not found")
-	}
-
-	result := []comments.Core{}
-	for i := 0; i < len(res); i++ {
-		temp := res[i]
-		result = append(result, ToCore(temp))
-		qry := User{}
-		err := cd.db.Where("id = ?", res[i].UserID).First(&qry).Error
-		if err != nil {
-			log.Println("no data found")
-			return []comments.Core{}, errors.New("data not found")
-		}
-		result[i].Owner = qry.Username
-	}
-
-	return result, nil
-}
-
 func (cd *commentData) Update(commentID int, postID int, updateData comments.Core) (comments.Core, error) {
 	cnv := CoreToData(updateData)
 	qry := cd.db.Model(&Comments{}).Where("id = ? AND post_id = ?", commentID, postID).Updates(&cnv)

@@ -13,7 +13,7 @@ type Posts struct {
 	Content     string
 	Img_content string
 	UserID      uint
-	Comment     []data.Comments
+	Comment     []data.Comments `gorm:"foreignKey:PostID"`
 }
 
 type User struct {
@@ -21,6 +21,12 @@ type User struct {
 	Username string
 	Email    string
 	Password string
+}
+
+type Comment struct {
+	ID       uint
+	Text     string
+	Username string
 }
 
 func ToCore(data Posts) posts.Core {

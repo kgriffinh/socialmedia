@@ -1,6 +1,6 @@
 package comments
 
-import "github.com/labstack/echo"
+import "github.com/labstack/echo/v4"
 
 type Core struct {
 	ID     uint
@@ -22,7 +22,7 @@ type CommentService interface {
 }
 
 type CommentData interface {
-	Add(postID int, newPost Core) (Core, error)
+	Add(userID int, newPost Core) (Core, error)
 	Update(commentID int, postID int, updateData Core) (Core, error)
 	Delete(commentID int, postID int) error
 }

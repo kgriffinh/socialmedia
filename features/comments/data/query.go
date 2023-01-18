@@ -18,9 +18,9 @@ func New(db *gorm.DB) comments.CommentData {
 	}
 }
 
-func (cd *commentData) Add(postID int, newComment comments.Core) (comments.Core, error) {
+func (cd *commentData) Add(userID int, newComment comments.Core) (comments.Core, error) {
 	cnv := CoreToData(newComment)
-	cnv.PostID = uint(postID)
+	cnv.UserID = uint(userID)
 	err := cd.db.Create(&cnv).Error
 	if err != nil {
 		log.Println("query error", err.Error())

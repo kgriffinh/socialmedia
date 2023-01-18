@@ -77,7 +77,7 @@ func (ps *postsSrv) GetPostDetail(postID int) (interface{}, error) {
 		} else {
 			msg = "terdapat masalah pada server"
 		}
-		return res, errors.New(msg)
+		return nil, errors.New(msg)
 	}
 
 	return res, nil

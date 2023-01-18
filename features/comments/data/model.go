@@ -29,7 +29,8 @@ func ToCore(data Comments) comments.Core {
 
 func CoreToData(data comments.Core) Comments {
 	return Comments{
-		Model: gorm.Model{ID: data.ID},
-		Text:  data.Text,
+		Model:  gorm.Model{ID: data.ID},
+		Text:   data.Text,
+		PostID: data.PostID,
 	}
 }

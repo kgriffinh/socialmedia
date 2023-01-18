@@ -24,8 +24,8 @@ func InitDB(ac AppConfig) *gorm.DB {
 }
 
 func Migrate(db *gorm.DB) {
-	db.AutoMigrate(users.User{})
-	db.AutoMigrate(posts.Posts{})
-	db.AutoMigrate(comments.Comments{})
+	db.AutoMigrate(&users.User{})
+	db.AutoMigrate(&posts.Posts{})
+	db.AutoMigrate(&comments.Comments{})
 
 }

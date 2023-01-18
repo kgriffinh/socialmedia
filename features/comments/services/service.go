@@ -27,7 +27,7 @@ func (cs *commentSrv) Add(token interface{}, newComment comments.Core) (comments
 	if userID <= 0 {
 		return comments.Core{}, errors.New("comment tidak ditemukan")
 	}
-
+	log.Println("new comment :", newComment.Text)
 	err := cs.vld.Struct(newComment)
 	if err != nil {
 		if _, ok := err.(*validator.InvalidValidationError); ok {

@@ -58,6 +58,10 @@ func ReadEnv() *AppConfig {
 		app.DBPort = cnv
 		isRead = false
 	}
+	if val, found := os.LookupEnv("DBNAME"); found {
+		app.DBName = val
+		isRead = false
+	}
 	if val, found := os.LookupEnv("CLOUDINARY_CLOUD_NAME"); found {
 		app.DBName = val
 		isRead = false

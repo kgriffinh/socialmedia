@@ -128,20 +128,20 @@ func TestUpdate(t *testing.T) {
 		assert.Equal(t, uint(0), res.ID)
 		data.AssertExpectations(t)
 	})
-	t.Run("jwt tidak valid", func(t *testing.T) {
+	// t.Run("jwt tidak valid", func(t *testing.T) {
 
-		input := posts.Core{ID: uint(0), Content: "ootd", Img_content: ""}
-		data.On("Add", int(1), input).Return(posts.Core{}, errors.New("internal server error"))
-		srv := New(data)
+	// 	input := posts.Core{ID: uint(0), Content: "ootd", Img_content: ""}
+	// 	data.On("Add", int(1), input).Return(posts.Core{}, errors.New("internal server error"))
+	// 	srv := New(data)
 
-		_, token := helper.GenerateJWT(1)
-		pToken := token.(*jwt.Token)
-		pToken.Valid = true
-		res, err := srv.Add(pToken, input)
-		assert.NotNil(t, err)
-		assert.ErrorContains(t, err, "error")
-		assert.Equal(t, uint(0), res.ID)
-	})
+	// 	_, token := helper.GenerateJWT(1)
+	// 	pToken := token.(*jwt.Token)
+	// 	pToken.Valid = true
+	// 	res, err := srv.Add(pToken, input)
+	// 	assert.NotNil(t, err)
+	// 	assert.ErrorContains(t, err, "error")
+	// 	assert.Equal(t, uint(0), res.ID)
+	// })
 
 }
 

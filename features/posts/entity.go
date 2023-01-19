@@ -5,7 +5,7 @@ import "github.com/labstack/echo/v4"
 type Core struct {
 	ID          uint
 	Content     string `validate:"required"`
-	Img_content string `validate:"required"`
+	Img_content string
 	Owner       string
 }
 

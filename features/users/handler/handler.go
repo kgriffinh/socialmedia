@@ -85,8 +85,11 @@ func (uc *userControll) Update() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
-
-		return c.JSON(PrintSuccessReponse(http.StatusOK, "berhasil update profil", PPToResponse(res)))
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"msg":   "berhasil update",
+			"hasil": res,
+		})
+		// return c.JSON(PrintSuccessReponse(http.StatusOK, "berhasil update profil", PPToResponse(res)))
 	}
 }
 

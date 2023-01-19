@@ -13,20 +13,20 @@ type CommentData struct {
 	mock.Mock
 }
 
-// Add provides a mock function with given fields: postID, newPost
-func (_m *CommentData) Add(postID int, newPost comments.Core) (comments.Core, error) {
-	ret := _m.Called(postID, newPost)
+// Add provides a mock function with given fields: userID, newPost
+func (_m *CommentData) Add(userID int, newPost comments.Core) (comments.Core, error) {
+	ret := _m.Called(userID, newPost)
 
 	var r0 comments.Core
 	if rf, ok := ret.Get(0).(func(int, comments.Core) comments.Core); ok {
-		r0 = rf(postID, newPost)
+		r0 = rf(userID, newPost)
 	} else {
 		r0 = ret.Get(0).(comments.Core)
 	}
 
 	var r1 error
 	if rf, ok := ret.Get(1).(func(int, comments.Core) error); ok {
-		r1 = rf(postID, newPost)
+		r1 = rf(userID, newPost)
 	} else {
 		r1 = ret.Error(1)
 	}

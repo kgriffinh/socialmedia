@@ -11,6 +11,12 @@ type Core struct {
 	Content     string `validate:"required"`
 	Img_content string
 	Username    string
+	Userpp      string
+}
+
+type Usercore struct {
+	Id     int
+	Userpp string
 }
 
 type PostHandler interface {

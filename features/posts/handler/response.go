@@ -18,7 +18,8 @@ type PostResponse struct {
 	ID          uint   `json:"id"`
 	Content     string `json:"content"`
 	Img_content string `json:"img_content"`
-	Username    string `json:"apalah"`
+	Username    string `json:"username"`
+	Userpp      string `json:"photo_profile"`
 }
 
 type PostDetailResponse struct {

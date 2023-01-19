@@ -50,6 +50,7 @@ func (pd *postsData) GetPost() ([]posts.Core, error) {
 			return []posts.Core{}, errors.New("data not found")
 		}
 		result[i].Username = qry.Username
+		result[i].Userpp = qry.Userpp
 	}
 	return result, nil
 }

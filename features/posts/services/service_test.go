@@ -246,22 +246,24 @@ func TestGetPost(t *testing.T) {
 	})
 }
 
-// func TestGetPostDetail(t *testing.T){
-// 	repo := mocks.NewPostData(t)
+func TestGetPostDetail(t *testing.T) {
+	repo := mocks.NewPostData(t)
 
-// 	resData := interface{}
+	resData := posts.Core{
+		ID:          1,
+		Content:     "halo",
+		Img_content: "nama saya juki",
+	}
 
-// 	}
+	t.Run("Sukses lihat content & comment", func(t *testing.T) {
 
-// 	t.Run("Sukses lihat content & comment", func(t *testing.T) {
+		repo.On("GetPostDetail", 1).Return(resData, nil).Once()
 
-// 		repo.On("GetPostDetail", 1).Return(resData, nil).Once()
+		srv := New(repo)
 
-// 		srv := New(repo)
-
-// 		res, err := srv.GetPostDetail(postID)
-// 		assert.Nil(t, err)
-// 		assert.NotEmpty(t, res)
-// 		repo.AssertExpectations(t)
-// 	})
-// }
+		res, err := srv.GetPostDetail(1)
+		assert.Nil(t, err)
+		assert.NotEmpty(t, res)
+		repo.AssertExpectations(t)
+	})
+}

@@ -217,12 +217,15 @@ paths:
                   - id: 1
                     content: "kemarin sore saya pergi mengunjungi taman di dekat rumah saya"
                     image_content: "https://berita.99.co/wp-content/uploads/2022/07/nature-mountain-scenery-background-free-vector.jpg"
+                    username: "griffin"
                   - id: 2
                     content: "besok saya akan pergi ke mall"
                     image_content:
+                    username: "joe"
                   - id: 3
-                    content:
+                    content: "hari ini saya membeli susu"
                     image_content: "https://berita.99.co/wp-content/uploads/2022/07/nature-mountain-scenery-background-free-vector.jpg"
+                    username: "lukaz"
                 message: berhasil menampilkan data posting
         404:
           $ref: '#/components/responses/404'

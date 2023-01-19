@@ -248,11 +248,13 @@ func TestGetPost(t *testing.T) {
 
 // func TestGetPostDetail(t *testing.T){
 // 	repo := mocks.NewPostData(t)
-// 	resData := type test interface{
+
+// 	resData := interface{}
 
 // 	}
 
 // 	t.Run("Sukses lihat content & comment", func(t *testing.T) {
+
 // 		repo.On("GetPostDetail", 1).Return(resData, nil).Once()
 
 // 		srv := New(repo)

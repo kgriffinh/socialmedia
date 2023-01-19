@@ -38,6 +38,7 @@ func (pd *postsData) GetPost() ([]posts.Core, error) {
 		log.Println("no data found")
 		return []posts.Core{}, errors.New("data not found")
 	}
+
 	result := []posts.Core{}
 	for i := 0; i < len(res); i++ {
 		temp := res[i]
@@ -48,28 +49,40 @@ func (pd *postsData) GetPost() ([]posts.Core, error) {
 			log.Println("no data found")
 			return []posts.Core{}, errors.New("data not found")
 		}
-		result[i].Owner = qry.Username
+		result[i].Username = qry.Username
 	}
-
 	return result, nil
 }
 
 func (pd *postsData) GetPostDetail(postID int) (interface{}, error) {
-	resPost := map[string]interface{}{}
-	qryPost := pd.db.Model(&Posts{}).Raw("SELECT p.id, p.content, p.img_content, u.username FROM posts p JOIN users u ON u.id = p.user_id").Scan(&resPost)
-	// Select("content").Where("id = ?", postID).First(&resPost)
-	err := qryPost.Error
+	// resPost := map[string]interface{}{}
+	// qryPost := pd.db.Where("id = ?", postID).Preload("Comments").First(&resPost)
+	res := Posts{}
+	err := pd.db.Preload("Comment").Where("id = ?", postID).Find(&res).Error
+
 	if err != nil {
 		log.Println("no data found")
 		return nil, errors.New("data not found")
 	}
-	resCom := map[string]interface{}{}
-	qryCom := pd.db.Model(&Comment{}).Raw("SELECT comments.id, comments.text, users.username FROM comments JOIN users ON users.id = comments.user_id WHERE comments.post_id = ?", postID).Scan(&resCom)
-	err2 := qryCom.Error
-	if err2 != nil {
-		log.Println("no data found")
-		return nil, errors.New("data not found")
-	}
+
+	hasil := make(map[string]interface{})
+	hasil["id"] = res.ID
+	return hasil, nil
+
+	// qryPost := pd.db.Model(&Posts{}).Raw("SELECT p.id, p.content, p.img_content, u.username FROM posts p JOIN users u ON u.id = p.user_id").Scan(&resPost)
+	// // Select("content").Where("id = ?", postID).First(&resPost)
+	// err := qryPost.Error
+	// if err != nil {
+	// 	log.Println("no data found")
+	// 	return nil, errors.New("data not found")
+	// }
+	// resCom := map[string]interface{}{}
+	// qryCom := pd.db.Model(&Comment{}).Raw("SELECT comments.id, comments.text, users.username FROM comments JOIN users ON users.id = comments.user_id WHERE comments.post_id = ?", postID).Scan(&resCom)
+	// err2 := qryCom.Error
+	// if err2 != nil {
+	// 	log.Println("no data found")
+	// 	return nil, errors.New("data not found")
+	// }
 
 	// result := []comments.Core{}
 	// for i := 0; i < len(resCom); i++ {
@@ -83,9 +96,9 @@ func (pd *postsData) GetPostDetail(postID int) (interface{}, error) {
 	// 	}
 	// 	result[i].Owner = qry.Username
 	// }
-	resPost["comments"] = resCom
+	// resPost["comments"] = resCom
 
-	return resPost, nil
+	// return resPost, nil
 }
 
 func (pd *postsData) Update(postID int, userID int, updateData posts.Core) (posts.Core, error) {

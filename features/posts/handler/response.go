@@ -18,14 +18,14 @@ type PostResponse struct {
 	ID          uint   `json:"id"`
 	Content     string `json:"content"`
 	Img_content string `json:"img_content"`
-	Owner       string `json:"owner"`
+	Username    string `json:"apalah"`
 }
 
 type PostDetailResponse struct {
 	ID          uint   `json:"id"`
 	Content     string `json:"content"`
 	Img_content string `json:"img_content"`
-	Owner       string `json:"owner"`
+	Username    string `json:"username"`
 	Comment     []data.Comments
 }
 
@@ -42,7 +42,7 @@ func ToResponse(data posts.Core) PostResponse {
 		ID:          data.ID,
 		Content:     data.Content,
 		Img_content: data.Img_content,
-		Owner:       data.Owner,
+		Username:    data.Username,
 	}
 }
 

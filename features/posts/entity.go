@@ -10,7 +10,7 @@ type Core struct {
 	ID          uint
 	Content     string `validate:"required"`
 	Img_content string
-	Owner       string
+	Username    string
 }
 
 type PostHandler interface {

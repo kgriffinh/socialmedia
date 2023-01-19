@@ -27,6 +27,7 @@ type PostDetailResponse struct {
 	Content     string `json:"content"`
 	Img_content string `json:"img_content"`
 	Username    string `json:"username"`
+	Userpp      string `json:"userpp"`
 	Comment     []data.Comments
 }
 
@@ -53,6 +54,16 @@ func GetPostResponse(data []posts.Core) []PostResponse {
 		res = append(res, ToResponse(v))
 	}
 	return res
+}
+
+func PPToResponse(data posts.Core) PostResponse {
+	return PostResponse{
+		ID:          data.ID,
+		Content:     data.Content,
+		Img_content: data.Img_content,
+		Username:    data.Username,
+		Userpp:      data.Userpp,
+	}
 }
 
 // func ToResponseGetPost(data posts.Core) PostResponse {

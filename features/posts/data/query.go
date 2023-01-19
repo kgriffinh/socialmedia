@@ -66,9 +66,9 @@ func (pd *postsData) GetPostDetail(postID int) (interface{}, error) {
 		return nil, errors.New("data not found")
 	}
 
-	hasil := make(map[string]interface{})
-	hasil["id"] = res.ID
-	return hasil, nil
+	// hasil := make(map[string]interface{})
+	// hasil["id"] = res.ID
+	return res, nil
 
 	// qryPost := pd.db.Model(&Posts{}).Raw("SELECT p.id, p.content, p.img_content, u.username FROM posts p JOIN users u ON u.id = p.user_id").Scan(&resPost)
 	// // Select("content").Where("id = ?", postID).First(&resPost)

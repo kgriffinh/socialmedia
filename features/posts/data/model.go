@@ -10,10 +10,9 @@ import (
 
 type Posts struct {
 	gorm.Model
-	Content     string `json:"content"`
-	Img_content string
-	UserID      uint
-	User        User
+	Content     string          `json:"content"`
+	Img_content string          `json:"img_content"`
+	UserID      uint            `json:"user_id"`
 	Comment     []data.Comments `gorm:"foreignKey:PostID"`
 }
 

@@ -30,7 +30,7 @@ func (uc *userControll) Login() echo.HandlerFunc {
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
 
-		return c.JSON(PrintSuccessReponse(http.StatusOK, "berhasil login", res, token))
+		return c.JSON(PrintSuccessReponse(http.StatusOK, "berhasil login", ToResponse(res), token))
 	}
 }
 func (uc *userControll) Register() echo.HandlerFunc {
@@ -45,7 +45,7 @@ func (uc *userControll) Register() echo.HandlerFunc {
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
 
-		return c.JSON(PrintSuccessReponse(http.StatusCreated, "berhasil mendaftar", res))
+		return c.JSON(PrintSuccessReponse(http.StatusCreated, "berhasil mendaftar", ToResponse(res)))
 	}
 }
 func (uc *userControll) Profile() echo.HandlerFunc {
@@ -57,7 +57,7 @@ func (uc *userControll) Profile() echo.HandlerFunc {
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
 
-		return c.JSON(PrintSuccessReponse(http.StatusOK, "berhasil lihat profil", res))
+		return c.JSON(PrintSuccessReponse(http.StatusOK, "berhasil lihat profil", PPToResponse(res)))
 	}
 }
 
@@ -85,11 +85,11 @@ func (uc *userControll) Update() echo.HandlerFunc {
 		if err != nil {
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
-		return c.JSON(http.StatusOK, map[string]interface{}{
-			"msg":   "berhasil update",
-			"hasil": res,
-		})
-		// return c.JSON(PrintSuccessReponse(http.StatusOK, "berhasil update profil", PPToResponse(res)))
+		// return c.JSON(http.StatusOK, map[string]interface{}{
+		// 	"msg":   "berhasil update",
+		// 	"hasil": res,
+		// })
+		return c.JSON(PrintSuccessReponse(http.StatusOK, "berhasil update profil", PPToResponse(res)))
 	}
 }
 

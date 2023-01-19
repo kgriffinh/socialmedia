@@ -12,12 +12,11 @@ tags:
   - name: posts
   - name: comments
 paths:
-  /users:
+  /register:
     post:
       tags:
         - "users"
       description: untuk melakukan registrasi user
-      summary: register
       requestBody:
         content:
           application/json:
@@ -51,6 +50,7 @@ paths:
           $ref: '#/components/responses/400'
         500:
           $ref: '#/components/responses/500'
+  /users:
     get:
       tags:
         - "users"
@@ -125,7 +125,6 @@ paths:
       tags:
         - users
       description: "untuk melakukan login"
-      summary: login user
       requestBody:
         content:
           application/json:

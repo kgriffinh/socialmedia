@@ -2,6 +2,7 @@ package posts
 
 import (
 	"mime/multipart"
+	"socialmedia/features/comments/data"
 
 	"github.com/labstack/echo/v4"
 )
@@ -12,6 +13,7 @@ type Core struct {
 	Img_content string
 	Username    string
 	Userpp      string
+	Comment     []data.Comments
 }
 
 type Usercore struct {

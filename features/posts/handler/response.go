@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 	// "socialmedia/features/comments"
-	"socialmedia/features/comments/data"
+
 	"socialmedia/features/posts"
 	"strings"
 )
@@ -22,14 +22,14 @@ type PostResponse struct {
 	Userpp      string `json:"photo_profile"`
 }
 
-type PostDetailResponse struct {
-	ID          uint   `json:"id"`
-	Content     string `json:"content"`
-	Img_content string `json:"img_content"`
-	Username    string `json:"username"`
-	Userpp      string `json:"userpp"`
-	Comment     []data.Comments
-}
+// type PostDetailResponse struct {
+// 	ID          uint   `json:"id"`
+// 	Content     string `json:"content"`
+// 	Img_content string `json:"img_content"`
+// 	Username    string `json:"username"`
+// 	Userpp      string `json:"userpp"`
+// 	Comment     []data.Comments
+// }
 
 func AddToResponse(data posts.Core) AddPostResponse {
 	return AddPostResponse{
@@ -56,15 +56,16 @@ func GetPostResponse(data []posts.Core) []PostResponse {
 	return res
 }
 
-func PPToResponse(data posts.Core) PostResponse {
-	return PostResponse{
-		ID:          data.ID,
-		Content:     data.Content,
-		Img_content: data.Img_content,
-		Username:    data.Username,
-		Userpp:      data.Userpp,
-	}
-}
+// func PPToResponse(data posts.Core) PostDetailResponse {
+// 	return PostDetailResponse{
+// 		ID:          data.ID,
+// 		Content:     data.Content,
+// 		Img_content: data.Img_content,
+// 		Username:    data.Username,
+// 		Userpp:      data.Userpp,
+// 		Comment:     data.Comment,
+// 	}
+// }
 
 // func ToResponseGetPost(data posts.Core) PostResponse {
 // 	return PostResponse{

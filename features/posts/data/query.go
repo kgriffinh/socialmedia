@@ -56,22 +56,40 @@ func (pd *postsData) GetPost() ([]posts.Core, error) {
 }
 
 func (pd *postsData) GetPostDetail(postID int) (interface{}, error) {
-	// resPost := map[string]interface{}{}
-	// qryPost := pd.db.Where("id = ?", postID).Preload("Comments").First(&resPost)
 	res := Posts{}
 	err := pd.db.Preload("Comment").Where("id = ?", postID).Find(&res).Error
-
-	// err := pd.db.Preload("User").Preload("Comment").Select("posts.id, posts.content, posts.img_content, posts.user_id, comments.text, comments.user_id, comments.post_id,").Joins("JOIN comments ON comments.post_id = posts.id JOIN users ON users.id = posts.user_id").Where("posts.id = ?", postID).Find(&res).Error
-	// err := pd.db.Raw("SELECT p.id, p.content, p.img_content, u.username FROM posts p JOIN users u ON u.id = p.user_id").Preload("Comment").Scan(&res).Error
-
-	// Select("posts.id", "posts.content", "posts.img_content", "u.username", "u.userpp")
 	if err != nil {
 		log.Println("no data found")
 		return nil, errors.New("data not found")
 	}
 
-	return res, nil
+	resUser := User{}
+	if err := pd.db.Where("id = ?", res.UserID).First(&resUser).Error; err != nil {
+		log.Println("Get By ID query error", err.Error())
+		return nil, err
+	}
 
+	result := posts.Core{
+		ID:          res.ID,
+		Content:     res.Content,
+		Img_content: res.Img_content,
+		Username:    resUser.Username,
+		Userpp:      resUser.Userpp,
+		Comment:     res.Comment,
+	}
+
+	return result, nil
+	// qryPost := pd.db.Where("id = ?", postID).Preload("Comments").First(&resPost)
+	// res := Posts{}
+	// err := pd.db.Preload("Comment").Where("id = ?", postID).Find(&res).Error
+
+	// if err != nil {
+	// 	log.Println("no data found")
+	// 	return posts.Core{}, errors.New("data not found")
+	// }
+
+	// return posts.Core{}, nil
+	// resPost := map[string]interface{}{}
 	// qryPost := pd.db.Model(&Posts{}).Raw("SELECT p.id, p.content, p.img_content, u.username FROM posts p JOIN users u ON u.id = p.user_id").Scan(&resPost)
 	// // Select("content").Where("id = ?", postID).First(&resPost)
 	// err := qryPost.Error

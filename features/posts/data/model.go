@@ -19,6 +19,7 @@ type Posts struct {
 type User struct {
 	gorm.Model
 	Username string
+	Email    string
 	Password string
 	Userpp   string
 }

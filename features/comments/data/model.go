@@ -8,9 +8,9 @@ import (
 
 type Comments struct {
 	gorm.Model
-	Text   string
-	UserID uint
-	PostID uint
+	Text   string `json:"text"`
+	UserID uint   `json:"user_id"`
+	PostID uint   `json:"post_id"`
 }
 
 type User struct {

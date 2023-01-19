@@ -2,6 +2,7 @@ package services
 
 import (
 	"errors"
+	"mime/multipart"
 	"socialmedia/features/users"
 	"socialmedia/helper"
 	"socialmedia/mocks"
@@ -164,70 +165,70 @@ func TestProfile(t *testing.T) {
 	})
 }
 
-// func TestUpdate(t *testing.T) {
-// 	repo := mocks.NewUserData(t)
+func TestUpdate(t *testing.T) {
+	repo := mocks.NewUserData(t)
 
-// 	t.Run("sukses update data", func(t *testing.T) {
-// 		input := users.Core{Username: "griffin", Email: "griffinh29@gmail.com"}
-// 		hashed, _ := helper.GeneratePassword("g123")
-// 		resData := users.Core{ID: uint(1), Username: "griffinh", Email: "ghh29@gmail.com", Password: hashed}
-// 		repo.On("Update", uint(1), input).Return(resData, nil).Once()
+	t.Run("sukses update data", func(t *testing.T) {
+		input, inp := users.Core{Username: "griffin", Email: "griffinh29@gmail.com"}, multipart.FileHeader{}
+		hashed, _ := helper.GeneratePassword("g123")
+		resData := users.Core{ID: uint(1), Username: "griffinh", Email: "ghh29@gmail.com", Password: hashed}
+		repo.On("Update", uint(1), input).Return(resData, nil).Once()
 
-// 		srv := New(repo)
-// 		_, token := helper.GenerateJWT(1)
-// 		pToken := token.(*jwt.Token)
-// 		pToken.Valid = true
-// 		res, err := srv.Update(pToken, input)
-// 		assert.Nil(t, err)
-// 		assert.Equal(t, resData.ID, res.ID)
-// 		assert.NotEqual(t, input.Username, res.Username)
-// 		assert.NotEqual(t, input.Email, res.Email)
-// 		repo.AssertExpectations(t)
-// 	})
+		srv := New(repo)
+		_, token := helper.GenerateJWT(1)
+		pToken := token.(*jwt.Token)
+		pToken.Valid = true
+		res, err := srv.Update(pToken, inp, input)
+		assert.Nil(t, err)
+		assert.Equal(t, resData.ID, res.ID)
+		assert.NotEqual(t, input.Username, res.Username)
+		assert.NotEqual(t, input.Email, res.Email)
+		repo.AssertExpectations(t)
+	})
 
-// 	t.Run("jwt tidak valid", func(t *testing.T) {
-// 		input := users.Core{Username: "griffin", Email: "griffinh29@gmail.com"}
-// 		srv := New(repo)
+	// 	t.Run("jwt tidak valid", func(t *testing.T) {
+	// 		input := users.Core{Username: "griffin", Email: "griffinh29@gmail.com"}
+	// 		srv := New(repo)
 
-// 		_, token := helper.GenerateJWT(0)
-// 		pToken := token.(*jwt.Token)
-// 		pToken.Valid = true
-// 		res, err := srv.Update(pToken, input)
-// 		assert.NotNil(t, err)
-// 		assert.ErrorContains(t, err, "not found")
-// 		assert.Equal(t, uint(0), res.ID)
-// 	})
+	// 		_, token := helper.GenerateJWT(0)
+	// 		pToken := token.(*jwt.Token)
+	// 		pToken.Valid = true
+	// 		res, err := srv.Update(pToken, input)
+	// 		assert.NotNil(t, err)
+	// 		assert.ErrorContains(t, err, "not found")
+	// 		assert.Equal(t, uint(0), res.ID)
+	// 	})
 
-// 	t.Run("data tidak ditemukan", func(t *testing.T) {
-// 		input := users.Core{Username: "griffin", Email: "griffinh29@gmail.com"}
-// 		repo.On("Update", uint(5), input).Return(users.Core{}, errors.New("data not found")).Once()
+	// 	t.Run("data tidak ditemukan", func(t *testing.T) {
+	// 		input := users.Core{Username: "griffin", Email: "griffinh29@gmail.com"}
+	// 		repo.On("Update", uint(5), input).Return(users.Core{}, errors.New("data not found")).Once()
 
-// 		srv := New(repo)
-// 		_, token := helper.GenerateJWT(5)
-// 		pToken := token.(*jwt.Token)
-// 		pToken.Valid = true
-// 		res, err := srv.Update(pToken, input)
-// 		assert.NotNil(t, err)
-// 		assert.ErrorContains(t, err, "tidak ditemukan")
-// 		assert.Equal(t, uint(0), res.ID)
-// 		repo.AssertExpectations(t)
-// 	})
+	// 		srv := New(repo)
+	// 		_, token := helper.GenerateJWT(5)
+	// 		pToken := token.(*jwt.Token)
+	// 		pToken.Valid = true
+	// 		res, err := srv.Update(pToken, input)
+	// 		assert.NotNil(t, err)
+	// 		assert.ErrorContains(t, err, "tidak ditemukan")
+	// 		assert.Equal(t, uint(0), res.ID)
+	// 		repo.AssertExpectations(t)
+	// 	})
 
-// 	t.Run("masalah di server", func(t *testing.T) {
-// 		input := users.Core{Username: "griffin", Email: "griffinh29@gmail.com"}
-// 		repo.On("Update", uint(1), input).Return(users.Core{}, errors.New("terdapat masalah pada server")).Once()
+	// 	t.Run("masalah di server", func(t *testing.T) {
+	// 		input := users.Core{Username: "griffin", Email: "griffinh29@gmail.com"}
+	// 		repo.On("Update", uint(1), input).Return(users.Core{}, errors.New("terdapat masalah pada server")).Once()
 
-// 		srv := New(repo)
-// 		_, token := helper.GenerateJWT(1)
-// 		pToken := token.(*jwt.Token)
-// 		pToken.Valid = true
-// 		res, err := srv.Update(pToken, input)
-// 		assert.NotNil(t, err)
-// 		assert.ErrorContains(t, err, "server")
-// 		assert.Equal(t, uint(0), res.ID)
-// 		repo.AssertExpectations(t)
-// 	})
-// }
+	//		srv := New(repo)
+	//		_, token := helper.GenerateJWT(1)
+	//		pToken := token.(*jwt.Token)
+	//		pToken.Valid = true
+	//		res, err := srv.Update(pToken, input)
+	//		assert.NotNil(t, err)
+	//		assert.ErrorContains(t, err, "server")
+	//		assert.Equal(t, uint(0), res.ID)
+	//		repo.AssertExpectations(t)
+	//	})
+}
 
 func TestDelete(t *testing.T) {
 	repo := mocks.NewUserData(t)

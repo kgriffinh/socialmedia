@@ -31,7 +31,7 @@ func ImageUploadHelper(input interface{}) (string, error) {
 }
 
 type File struct {
-	File multipart.File `json:"file,omitempty" form:"file"`
+	File multipart.File `json:"file,omitempty" form:"fileimg"`
 }
 
 type MediaDto struct {

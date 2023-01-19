@@ -67,6 +67,7 @@ paths:
               example:
                 username: "griffin"
                 email: "griffinh29@gmail.com"
+                userpp: ""
         404:
           $ref: '#/components/responses/404'
         500:
@@ -93,6 +94,8 @@ paths:
                 password:
                   type: string
                   format: password
+                userpp:
+                  type: string
       responses:
         200:
           $ref: '#/components/responses/200'

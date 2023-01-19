@@ -31,11 +31,7 @@ func ImageUploadHelper(input interface{}) (string, error) {
 }
 
 type File struct {
-	File multipart.File `json:"file,omitempty" validate:"required"`
-}
-
-type Url struct {
-	Url string `json:"url,omitempty" validate:"required"`
+	File multipart.File `json:"file,omitempty" form:"file"`
 }
 
 type MediaDto struct {
@@ -50,7 +46,6 @@ var (
 
 type mediaUpload interface {
 	FileUpload(file File) (string, error)
-	RemoteUpload(url Url) (string, error)
 }
 
 type media struct{}
@@ -69,21 +64,6 @@ func (*media) FileUpload(file File) (string, error) {
 	//upload
 	uploadUrl, err := ImageUploadHelper(file.File)
 	if err != nil {
-		return "", err
-	}
-	return uploadUrl, nil
-}
-
-func (*media) RemoteUpload(url Url) (string, error) {
-	//validate
-	err := validate.Struct(url)
-	if err != nil {
-		return "", err
-	}
-
-	//upload
-	uploadUrl, errUrl := ImageUploadHelper(url.Url)
-	if errUrl != nil {
 		return "", err
 	}
 	return uploadUrl, nil

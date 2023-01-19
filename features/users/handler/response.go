@@ -18,6 +18,20 @@ func ToResponse(data users.Core) UserReponse {
 	}
 }
 
+type UpdateUserResp struct {
+	Username string `json:"username"`
+	Email    string `json:"email"`
+	Userpp   string `json:"userpp"`
+}
+
+func PPToResponse(data users.Core) UpdateUserResp {
+	return UpdateUserResp{
+		Username: data.Username,
+		Email:    data.Email,
+		Userpp:   data.Userpp,
+	}
+}
+
 func PrintSuccessReponse(code int, message string, data ...interface{}) (int, interface{}) {
 	resp := map[string]interface{}{}
 	if len(data) < 2 {

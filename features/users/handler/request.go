@@ -16,6 +16,7 @@ type RegisterRequest struct {
 type UpdateRequest struct {
 	Username string `json:"username" form:"username"`
 	Email    string `json:"email" form:"email"`
+	Userpp   string `json:"userpp" form:"userpp"`
 }
 
 func ReqToCore(data interface{}) *users.Core {
@@ -35,6 +36,7 @@ func ReqToCore(data interface{}) *users.Core {
 		cnv := data.(UpdateRequest)
 		res.Email = cnv.Email
 		res.Username = cnv.Username
+		res.Userpp = cnv.Userpp
 	default:
 		return nil
 	}

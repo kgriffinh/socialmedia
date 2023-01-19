@@ -3,6 +3,7 @@ package services
 import (
 	"errors"
 	"log"
+	"mime/multipart"
 	"socialmedia/config"
 	"socialmedia/features/users"
 	"socialmedia/helper"
@@ -89,11 +90,23 @@ func (uuc *userUseCase) Profile(token interface{}) (users.Core, error) {
 	return res, nil
 }
 
-func (uuc *userUseCase) Update(token interface{}, updateData users.Core) (users.Core, error) {
+func (uuc *userUseCase) Update(token interface{}, file multipart.FileHeader, updateData users.Core) (users.Core, error) {
 	id := helper.ExtractToken(token)
 	if id <= 0 {
 		return users.Core{}, errors.New("data not found")
 	}
+
+	formFile, err := file.Open()
+	if err != nil {
+		return users.Core{}, errors.New("input tidak sesuai")
+	}
+
+	uploadUrl, err := helper.NewMediaUpload().FileUpload(helper.File{File: formFile})
+	if err != nil {
+		return users.Core{}, errors.New("input tidak sesuai")
+	}
+
+	updateData.Userpp = uploadUrl
 
 	res, err := uuc.qry.Update(uint(id), updateData)
 	if err != nil {

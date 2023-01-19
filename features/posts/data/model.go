@@ -29,6 +29,10 @@ type Comment struct {
 	Username string
 }
 
+// type File struct {
+// 	File multipart.File `json:"file,omitempty"`
+// }
+
 func ToCore(data Posts) posts.Core {
 	return posts.Core{
 		ID:          data.ID,

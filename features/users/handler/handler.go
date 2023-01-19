@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 	"socialmedia/features/users"
+	"socialmedia/helper"
 
 	"github.com/labstack/echo/v4"
 )
@@ -62,18 +63,30 @@ func (uc *userControll) Profile() echo.HandlerFunc {
 
 func (uc *userControll) Update() echo.HandlerFunc {
 	return func(c echo.Context) error {
+
+		formHeader, err := c.FormFile("file")
+		if err != nil {
+			return c.JSON(
+				http.StatusInternalServerError,
+				helper.MediaDto{
+					StatusCode: http.StatusInternalServerError,
+					Message:    "error",
+					Data:       &echo.Map{"data": "Select a file to upload"},
+				})
+		}
+
 		token := c.Get("user")
 		input := UpdateRequest{}
 		if err := c.Bind(&input); err != nil {
 			return c.JSON(http.StatusBadRequest, "format inputan salah")
 		}
 
-		res, err := uc.srv.Update(token, *ReqToCore(input))
+		res, err := uc.srv.Update(token, *formHeader, *ReqToCore(input))
 		if err != nil {
 			return c.JSON(PrintErrorResponse(err.Error()))
 		}
 
-		return c.JSON(PrintSuccessReponse(http.StatusOK, "berhasil update profil", res))
+		return c.JSON(PrintSuccessReponse(http.StatusOK, "berhasil update profil", PPToResponse(res)))
 	}
 }
 

@@ -13,6 +13,7 @@ type User struct {
 	Username string
 	Email    string
 	Password string
+	Userpp   string
 	Post     []data.Posts `gorm:"foreignKey:UserID"`
 	Comment  []c.Comments `gorm:"foreignKey:UserID"`
 }
@@ -23,6 +24,7 @@ func ToCore(data User) users.Core {
 		Username: data.Username,
 		Email:    data.Email,
 		Password: data.Password,
+		Userpp:   data.Userpp,
 	}
 }
 
@@ -32,5 +34,6 @@ func CoreToData(data users.Core) User {
 		Username: data.Username,
 		Email:    data.Email,
 		Password: data.Password,
+		Userpp:   data.Userpp,
 	}
 }

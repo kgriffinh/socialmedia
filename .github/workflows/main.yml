@@ -35,8 +35,7 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             sudo chmod 777 /var/run/docker.sock
-            docker rmi ${{ secrets.DOCKER_USER }}/sosmed
-            docker pull ${{ secrets.DOCKER_USER }}/sosmed
             docker stop smcont
             docker rm smcont
+            docker rmi ${{ secrets.DOCKER_USER }}/sosmed
             docker run --name smcont -d -e DBUSER=${{ secrets.DBUSER }} -e DBPASS=${{ secrets.DBPASS }} -e DBHOST=${{ secrets.DBHOST }} -e DBPORT=3306 -e DBNAME=${{ secrets.DBNAME }} -e JWT_KEY=${{ secrets.JWT_KEY }} --link mysqlku -p 80:8000 ${{ secrets.DOCKER_USER }}/sosmed

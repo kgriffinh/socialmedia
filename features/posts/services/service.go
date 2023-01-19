@@ -3,6 +3,7 @@ package services
 import (
 	"errors"
 	"log"
+	"mime/multipart"
 
 	"socialmedia/features/posts"
 	"socialmedia/helper"
@@ -23,22 +24,34 @@ func New(d posts.PostData) posts.PostService {
 	}
 }
 
-func (ps *postsSrv) Add(token interface{}, newPost posts.Core) (posts.Core, error) {
+func (ps *postsSrv) Add(token interface{}, file multipart.FileHeader, newPost posts.Core) (posts.Core, error) {
 	userID := helper.ExtractToken(token)
 	if userID <= 0 {
 		return posts.Core{}, errors.New("user tidak ditemukan")
 	}
 
-	err := ps.vld.Struct(newPost)
+	formFile, err := file.Open()
 	if err != nil {
-		if _, ok := err.(*validator.InvalidValidationError); ok {
-			log.Println(err)
+		return posts.Core{}, errors.New("input tidak sesuai")
+	}
+
+	uploadUrl, err := helper.NewMediaUpload().FileUpload(helper.File{File: formFile})
+	if err != nil {
+		return posts.Core{}, errors.New("input tidak sesuai")
+	}
+
+	newPost.Img_content = uploadUrl
+
+	err2 := ps.vld.Struct(newPost)
+	if err2 != nil {
+		if _, ok := err2.(*validator.InvalidValidationError); ok {
+			log.Println(err2)
 		}
 		return posts.Core{}, errors.New("input content tidak sesuai dengan arahan")
 	}
 
-	res, err := ps.data.Add(userID, newPost)
-	if err != nil {
+	res, err2 := ps.data.Add(userID, newPost)
+	if err2 != nil {
 		return posts.Core{}, errors.New("something wrong happens,server error")
 	}
 	return res, nil

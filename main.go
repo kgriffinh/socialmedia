@@ -24,7 +24,7 @@ func main() {
 	cfg := config.InitConfig()
 	db := config.InitDB(*cfg)
 
-	// // panggil fungsi Migrate untuk buat table baru di database
+	// panggil fungsi Migrate untuk buat table baru di database
 	config.Migrate(db)
 
 	userData := data.New(db)

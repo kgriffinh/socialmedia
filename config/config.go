@@ -9,16 +9,24 @@ import (
 )
 
 var (
-	JWT_KEY string = ""
+	JWT_KEY                  string = ""
+	CLOUDINARY_CLOUD_NAME    string = ""
+	CLOUDINARY_API_KEY       string = ""
+	CLOUDINARY_API_SECRET    string = ""
+	CLOUDINARY_UPLOAD_FOLDER string = ""
 )
 
 type AppConfig struct {
-	DBUser string
-	DBPass string
-	DBHost string
-	DBPort int
-	DBName string
-	jwtKey string
+	DBUser                   string
+	DBPass                   string
+	DBHost                   string
+	DBPort                   int
+	DBName                   string
+	jwtKey                   string
+	CLOUDINARY_CLOUD_NAME    string
+	CLOUDINARY_API_KEY       string
+	CLOUDINARY_API_SECRET    string
+	CLOUDINARY_UPLOAD_FOLDER string
 }
 
 func InitConfig() *AppConfig {
@@ -50,7 +58,19 @@ func ReadEnv() *AppConfig {
 		app.DBPort = cnv
 		isRead = false
 	}
-	if val, found := os.LookupEnv("DBNAME"); found {
+	if val, found := os.LookupEnv("CLOUDINARY_CLOUD_NAME"); found {
+		app.DBName = val
+		isRead = false
+	}
+	if val, found := os.LookupEnv("CLOUDINARY_API_KEY"); found {
+		app.DBName = val
+		isRead = false
+	}
+	if val, found := os.LookupEnv("CLOUDINARY_API_SECRET"); found {
+		app.DBName = val
+		isRead = false
+	}
+	if val, found := os.LookupEnv("CLOUDINARY_UPLOAD_FOLDER"); found {
 		app.DBName = val
 		isRead = false
 	}
@@ -73,5 +93,9 @@ func ReadEnv() *AppConfig {
 	}
 
 	JWT_KEY = app.jwtKey
+	CLOUDINARY_CLOUD_NAME = app.CLOUDINARY_CLOUD_NAME
+	CLOUDINARY_API_KEY = app.CLOUDINARY_API_KEY
+	CLOUDINARY_API_SECRET = app.CLOUDINARY_API_SECRET
+	CLOUDINARY_UPLOAD_FOLDER = app.CLOUDINARY_UPLOAD_FOLDER
 	return &app
 }

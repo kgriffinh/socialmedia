@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"socialmedia/features/posts"
+	"socialmedia/helper"
 	"strconv"
 
 	"github.com/labstack/echo/v4"
@@ -21,6 +22,18 @@ func New(ps posts.PostService) posts.PostHandler {
 
 func (ph *postHandle) Add() echo.HandlerFunc {
 	return func(c echo.Context) error {
+
+		formHeader, err := c.FormFile("file")
+		if err != nil {
+			return c.JSON(
+				http.StatusInternalServerError,
+				helper.MediaDto{
+					StatusCode: http.StatusInternalServerError,
+					Message:    "error",
+					Data:       &echo.Map{"data": "Select a file to upload"},
+				})
+		}
+
 		input := PostRequest{}
 		if err := c.Bind(&input); err != nil {
 			return c.JSON(http.StatusBadRequest, "format inputan salah")
@@ -28,7 +41,7 @@ func (ph *postHandle) Add() echo.HandlerFunc {
 
 		cnv := ConvToCore(input)
 
-		res, err := ph.srv.Add(c.Get("user"), *cnv)
+		res, err := ph.srv.Add(c.Get("user"), *formHeader, *cnv)
 		if err != nil {
 			log.Println("trouble :  ", err.Error())
 			return c.JSON(PrintErrorResponse(err.Error()))

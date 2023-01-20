@@ -7,12 +7,15 @@ Fitur user terdapat fungsi seperti:
     2. Login
     3. Edit
     4. Delete
+    5. Lihat profil
 
 Fitur post terdapat fungsi seperti:
     1. Upload content
     2. Upload image content
     3. Edit content dan image content
     4. Delete content dan image content
+    5. Lihat post
+    6. Lihat post dan comment
 
 Fitur comment terdapat fungsi seperti:
     1. Upload comment

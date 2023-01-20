@@ -13,7 +13,7 @@ type Core struct {
 	Img_content string
 	Username    string
 	Userpp      string
-	Comment     []data.Comments
+	Comment     []data.CommentNonGorm
 }
 
 type Usercore struct {

@@ -13,6 +13,13 @@ type Comments struct {
 	PostID uint   `json:"post_id"`
 }
 
+type CommentNonGorm struct {
+	ID       uint   `json:"id"`
+	Text     string `json:"text"`
+	Username string `json:"username"`
+	PostID   uint   `json:"post_id"`
+}
+
 type User struct {
 	gorm.Model
 	Username string

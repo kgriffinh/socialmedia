@@ -3,6 +3,7 @@ package data
 import (
 	"errors"
 	"log"
+	"socialmedia/features/comments/data"
 	"socialmedia/features/posts"
 
 	"gorm.io/gorm"
@@ -75,52 +76,69 @@ func (pd *postsData) GetPostDetail(postID int) (interface{}, error) {
 		Img_content: res.Img_content,
 		Username:    resUser.Username,
 		Userpp:      resUser.Userpp,
-		Comment:     res.Comment,
+	}
+
+	for _, v := range res.Comment {
+		user := User{}
+		if err := pd.db.Where("id = ?", v.UserID).First(&user).Error; err != nil {
+			log.Println("Get By ID query error", err.Error())
+			return nil, err
+		}
+
+		commentNonGorm := data.CommentNonGorm{
+			ID:       v.ID,
+			Text:     v.Text,
+			Username: user.Username,
+			PostID:   v.PostID,
+		}
+
+		result.Comment = append(result.Comment, commentNonGorm)
 	}
 
 	return result, nil
-	// qryPost := pd.db.Where("id = ?", postID).Preload("Comments").First(&resPost)
-	// res := Posts{}
-	// err := pd.db.Preload("Comment").Where("id = ?", postID).Find(&res).Error
-
-	// if err != nil {
-	// 	log.Println("no data found")
-	// 	return posts.Core{}, errors.New("data not found")
-	// }
-
-	// return posts.Core{}, nil
-	// resPost := map[string]interface{}{}
-	// qryPost := pd.db.Model(&Posts{}).Raw("SELECT p.id, p.content, p.img_content, u.username FROM posts p JOIN users u ON u.id = p.user_id").Scan(&resPost)
-	// // Select("content").Where("id = ?", postID).First(&resPost)
-	// err := qryPost.Error
-	// if err != nil {
-	// 	log.Println("no data found")
-	// 	return nil, errors.New("data not found")
-	// }
-	// resCom := map[string]interface{}{}
-	// qryCom := pd.db.Model(&Comment{}).Raw("SELECT comments.id, comments.text, users.username FROM comments JOIN users ON users.id = comments.user_id WHERE comments.post_id = ?", postID).Scan(&resCom)
-	// err2 := qryCom.Error
-	// if err2 != nil {
-	// 	log.Println("no data found")
-	// 	return nil, errors.New("data not found")
-	// }
-
-	// result := []comments.Core{}
-	// for i := 0; i < len(resCom); i++ {
-	// 	temp := resCom[i]
-	// 	result = append(result, ToCoreCom(temp))
-	// 	qry := User{}
-	// 	err := pd.db.Where("id = ?", resCom[i].UserID).First(&qry).Error
-	// 	if err != nil {
-	// 		log.Println("no data found")
-	// 		return []comments.Core{}, errors.New("data not found")
-	// 	}
-	// 	result[i].Owner = qry.Username
-	// }
-	// resPost["comments"] = resCom
-
-	// return resPost, nil
 }
+
+// qryPost := pd.db.Where("id = ?", postID).Preload("Comments").First(&resPost)
+// res := Posts{}
+// err := pd.db.Preload("Comment").Where("id = ?", postID).Find(&res).Error
+
+// if err != nil {
+// 	log.Println("no data found")
+// 	return posts.Core{}, errors.New("data not found")
+// }
+
+// return posts.Core{}, nil
+// resPost := map[string]interface{}{}
+// qryPost := pd.db.Model(&Posts{}).Raw("SELECT p.id, p.content, p.img_content, u.username FROM posts p JOIN users u ON u.id = p.user_id").Scan(&resPost)
+// // Select("content").Where("id = ?", postID).First(&resPost)
+// err := qryPost.Error
+// if err != nil {
+// 	log.Println("no data found")
+// 	return nil, errors.New("data not found")
+// }
+// resCom := map[string]interface{}{}
+// qryCom := pd.db.Model(&Comment{}).Raw("SELECT comments.id, comments.text, users.username FROM comments JOIN users ON users.id = comments.user_id WHERE comments.post_id = ?", postID).Scan(&resCom)
+// err2 := qryCom.Error
+// if err2 != nil {
+// 	log.Println("no data found")
+// 	return nil, errors.New("data not found")
+// }
+
+// result := []comments.Core{}
+// for i := 0; i < len(resCom); i++ {
+// 	temp := resCom[i]
+// 	result = append(result, ToCoreCom(temp))
+// 	qry := User{}
+// 	err := pd.db.Where("id = ?", resCom[i].UserID).First(&qry).Error
+// 	if err != nil {
+// 		log.Println("no data found")
+// 		return []comments.Core{}, errors.New("data not found")
+// 	}
+// 	result[i].Owner = qry.Username
+// }
+// resPost["comments"] = resCom
+
+// return resPost, nil
 
 func (pd *postsData) Update(postID int, userID int, updateData posts.Core) (posts.Core, error) {
 	cnv := CoreToData(updateData)

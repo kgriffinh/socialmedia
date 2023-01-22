@@ -18,6 +18,5 @@ func ConvToCore(data interface{}) *posts.Core {
 	default:
 		return nil
 	}
-
 	return &res
 }

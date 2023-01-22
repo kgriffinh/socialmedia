@@ -186,10 +186,9 @@ func TestUpdate(t *testing.T) {
 		repo.AssertExpectations(t)
 	})
 
-	// 	t.Run("jwt tidak valid", func(t *testing.T) {
+	// 	t.Run("jwt tidak valid", func(t *testing.T) {s
 	// 		input := users.Core{Username: "griffin", Email: "griffinh29@gmail.com"}
 	// 		srv := New(repo)
-
 	// 		_, token := helper.GenerateJWT(0)
 	// 		pToken := token.(*jwt.Token)
 	// 		pToken.Valid = true
@@ -202,7 +201,6 @@ func TestUpdate(t *testing.T) {
 	// 	t.Run("data tidak ditemukan", func(t *testing.T) {
 	// 		input := users.Core{Username: "griffin", Email: "griffinh29@gmail.com"}
 	// 		repo.On("Update", uint(5), input).Return(users.Core{}, errors.New("data not found")).Once()
-
 	// 		srv := New(repo)
 	// 		_, token := helper.GenerateJWT(5)
 	// 		pToken := token.(*jwt.Token)
@@ -217,7 +215,6 @@ func TestUpdate(t *testing.T) {
 	// 	t.Run("masalah di server", func(t *testing.T) {
 	// 		input := users.Core{Username: "griffin", Email: "griffinh29@gmail.com"}
 	// 		repo.On("Update", uint(1), input).Return(users.Core{}, errors.New("terdapat masalah pada server")).Once()
-
 	//		srv := New(repo)
 	//		_, token := helper.GenerateJWT(1)
 	//		pToken := token.(*jwt.Token)

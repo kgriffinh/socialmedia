@@ -16,11 +16,6 @@ type Core struct {
 	Comment     []data.CommentNonGorm
 }
 
-type Usercore struct {
-	Id     int
-	Userpp string
-}
-
 type PostHandler interface {
 	Add() echo.HandlerFunc
 	GetPost() echo.HandlerFunc
